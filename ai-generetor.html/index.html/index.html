@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vinayak | AI Website Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles & Variables */
+        :root {
+            --primary: #0a0a0f;
+            --secondary: #141420;
+            --accent: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --gradient: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 50%, #10b981 100%);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(139, 92, 246, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #d1d5db;
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --shadow-hard: 0 20px 60px rgba(139, 92, 246, 0.3);
+            --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient);
+            border-radius: 6px;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        .section-center h2::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .section-subtitle {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        /* Container & Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section, .section {
+            padding: 10rem 0;
+            position: relative;
+        }
+
+        .section-center {
+            text-align: center;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.4rem 3rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            border: none;
+            gap: 12px;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            z-index: -1;
+            transition: opacity 0.3s;
+            opacity: 1;
+        }
+
+        .btn:hover::before {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: var(--shadow-hard);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-ai {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            color: white;
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-ai:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-whatsapp:hover {
+            background: #128C7E;
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-outline:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: var(--accent-hover);
+            transform: translateY(-5px);
+            color: var(--accent-hover);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* AI Website Generator Section */
+        .ai-generator-section {
+            padding: 6rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-generator {
+            padding: 5rem;
+            border-radius: 30px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(59, 130, 246, 0.15));
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .ai-generator::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') center/cover;
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        .ai-generator > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .ai-prompt-container {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 3rem;
+            border-radius: 20px;
+            margin-top: 3rem;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .prompt-input {
+            width: 100%;
+            min-height: 180px;
+            padding: 2rem;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            resize: vertical;
+            font-family: 'Monaco', 'Courier New', monospace;
+            line-height: 1.6;
+            transition: var(--transition-smooth);
+        }
+
+        .prompt-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+        }
+
+        .prompt-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .prompt-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .example-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .example-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 0;
+        }
+
+        .example-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .example-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .example-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .example-card h4 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Generated Website Preview */
+        .generated-website-container {
+            margin-top: 4rem;
+            padding: 3rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .website-preview-frame {
+            width: 100%;
+            height: 500px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #1a1a2e;
+            position: relative;
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            margin-top: 2rem;
+        }
+
+        .preview-header {
+            height: 50px;
+            background: linear-gradient(90deg, #2d2d4d, #1a1a2e);
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .preview-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        .preview-content {
+            padding: 3rem;
+            height: calc(100% - 50px);
+            overflow-y: auto;
+        }
+
+        .website-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .detail-card {
+            padding: 1.8rem;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: var(--transition-smooth);
+        }
+
+        .detail-card:hover {
+            transform: translateY(-5px);
+            background: rgba(139, 92, 246, 0.15);
+        }
+
+        .detail-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Website Link Section */
+        .website-link-container {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(139, 92, 246, 0.1));
+            padding: 3rem;
+            border-radius: 20px;
+            margin-top: 3rem;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            display: none;
+        }
+
+        .website-link-box {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 2px dashed rgba(139, 92, 246, 0.4);
+            text-align: center;
+        }
+
+        .link-url {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-family: 'Monaco', monospace;
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin: 2rem 0;
+            word-break: break-all;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        /* AI Processing Animation */
+        .ai-processing {
+            display: none;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .ai-loader {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            padding: 3rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .ai-spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(139, 92, 246, 0.2);
+            border-top: 4px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+
+        .ai-progress {
+            width: 300px;
+            height: 8px;
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .ai-progress-bar {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 1000px;
+            }
+            
+            h1 {
+                font-size: 4rem;
+            }
+            
+            h2 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .ai-generator {
+                padding: 3rem;
+            }
+            
+            .prompt-examples {
+                grid-template-columns: 1fr;
+            }
+            
+            .website-preview-frame {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+            
+            h2 {
+                font-size: 2.5rem;
+            }
+            
+            .section {
+                padding: 6rem 0;
+            }
+            
+            .ai-generator {
+                padding: 2rem;
+            }
+            
+            .ai-prompt-container {
+                padding: 2rem;
+            }
+            
+            .website-preview-frame {
+                height: 300px;
+            }
+            
+            .btn {
+                padding: 1.2rem 2rem;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 0 1.5rem;
+            }
+            
+            .ai-generator {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- AI Website Generator Section -->
+    <section class="ai-generator-section">
+        <div class="container section-center">
+            <h2>AI Website Generator</h2>
+            <p class="section-subtitle">Describe your website in simple words. Get a live website link instantly.</p>
+            
+            <div class="ai-generator glass">
+                <h3 style="background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 2rem;">
+                    <i class="fas fa-robot"></i> Generate Any Website Instantly
+                </h3>
+                
+                <div class="ai-prompt-container">
+                    <div style="margin-bottom: 2rem;">
+                        <label for="websitePrompt" style="display: block; margin-bottom: 1rem; font-weight: 600; color: var(--text-primary); font-size: 1.2rem;">
+                            <i class="fas fa-keyboard"></i> Describe Your Website Idea:
+                        </label>
+                        <textarea 
+                            id="websitePrompt" 
+                            class="prompt-input" 
+                            placeholder="Example: 'Create a luxury restaurant website with dark theme, online menu, table booking, and WhatsApp ordering...'"
+                            rows="5"
+                        ></textarea>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button class="btn btn-ai" id="generateWebsite">
+                            <i class="fas fa-magic"></i> Generate Website Now
+                        </button>
+                        <button class="btn btn-outline" id="clearPrompt">
+                            <i class="fas fa-sync-alt"></i> Clear & Start Over
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Prompt Examples -->
+                <div style="margin-top: 4rem;">
+                    <h4 style="margin-bottom: 2rem; color: var(--text-primary);">
+                        <i class="fas fa-lightbulb"></i> Try These Examples:
+                    </h4>
+                    <div class="prompt-examples">
+                        <div class="example-card" onclick="useExample(1)">
+                            <h4><i class="fas fa-utensils"></i> Restaurant Website</h4>
+                            <p style="color: var(--text-secondary); font-size: 1rem;">"Create a premium restaurant website with dark theme, online menu, table reservation system, and WhatsApp food ordering."</p>
+                        </div>
+                        <div class="example-card" onclick="useExample(2)">
+                            <h4><i class="fas fa-shopping-bag"></i> Ecommerce Store</h4>
+                            <p style="color: var(--text-secondary); font-size: 1rem;">"Build a luxury fashion ecommerce website with product catalog, shopping cart, payment gateway, and customer reviews."</p>
+                        </div>
+                        <div class="example-card" onclick="useExample(3)">
+                            <h4><i class="fas fa-briefcase"></i> Corporate Website</h4>
+                            <p style="color: var(--text-secondary); font-size: 1rem;">"Design a modern corporate website with services portfolio, team profiles, client testimonials, and contact form."</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AI Processing Animation -->
+                <div class="ai-processing" id="aiProcessing">
+                    <div class="ai-loader">
+                        <div class="ai-spinner"></div>
+                        <div>
+                            <h4 style="margin-bottom: 1rem; color: var(--accent);">AI is Creating Your Website</h4>
+                            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Generating design, features, and deployment...</p>
+                            <div class="ai-progress">
+                                <div class="ai-progress-bar" id="progressBar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Generated Website Preview -->
+                <div class="generated-website-container glass" id="websitePreview">
+                    <h4 style="margin-bottom: 2rem; color: var(--text-primary);">
+                        <i class="fas fa-desktop"></i> Your Website is Ready!
+                    </h4>
+                    
+                    <div class="website-preview-frame">
+                        <div class="preview-header">
+                            <div class="preview-dot" style="background: #ff5f57;"></div>
+                            <div class="preview-dot" style="background: #ffbd2e;"></div>
+                            <div class="preview-dot" style="background: #28ca42;"></div>
+                            <div style="margin-left: auto; color: var(--text-secondary); font-size: 0.9rem;">preview.websites.ai</div>
+                        </div>
+                        <div class="preview-content" id="previewContent">
+                            <!-- Website content will be generated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="website-details" id="websiteDetails">
+                        <!-- Features will be listed here -->
+                    </div>
+                </div>
+                
+                <!-- Website Link -->
+                <div class="website-link-container glass" id="websiteLink">
+                    <h4 style="margin-bottom: 2rem; color: #10b981; text-align: center;">
+                        <i class="fas fa-link"></i> Your Website is Live!
+                    </h4>
+                    
+                    <div class="website-link-box">
+                        <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1.5rem;">
+                            Your website has been generated and deployed successfully. Access it instantly:
+                        </p>
+                        
+                        <div class="link-url" id="liveWebsiteUrl">
+                            https://websites.ai/your-website-1234
+                        </div>
+                        
+                        <div class="btn-group" style="justify-content: center;">
+                            <button class="btn btn-primary" id="visitWebsite">
+                                <i class="fas fa-external-link-alt"></i> Visit Live Website
+                            </button>
+                            <button class="btn btn-outline" id="shareWebsite">
+                                <i class="fas fa-share"></i> Share Link
+                            </button>
+                            <button class="btn btn-ai" id="createAnother">
+                                <i class="fas fa-plus"></i> Create Another
+                            </button>
+                        </div>
+                        
+                        <div style="margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid rgba(139, 92, 246, 0.2);">
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                                <i class="fas fa-info-circle"></i> Your website will remain active for 7 days. Want a permanent version? 
+                                <a href="https://wa.me/+918797673561?text=Hi%20Vinayak,%20I%20created%20a%20website%20with%20AI%20and%20want%20it%20permanently." target="_blank" style="color: var(--accent); text-decoration: none;">
+                                    Contact me on WhatsApp
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Example prompts
+        const examples = [
+            "Create a luxury restaurant website with dark theme, online menu display, table reservation system, and WhatsApp food ordering integration.",
+            "Build a premium fashion ecommerce website with product catalog, shopping cart, secure payment gateway, customer reviews, and size guide.",
+            "Design a modern corporate website with services portfolio, team profiles, client testimonials, project gallery, and contact form.",
+            "Create an influencer portfolio website with dark mode, content gallery, booking system, social media integration, and newsletter signup.",
+            "Build a startup landing page with hero section, features grid, pricing plans, team section, investor contact, and gradient animations."
+        ];
+
+        // Website templates with premium designs
+        const websiteTemplates = {
+            restaurant: {
+                name: "Luxury Restaurant",
+                color: "#B08D57",
+                features: [
+                    { icon: "fa-utensils", title: "Online Menu", desc: "Interactive digital menu with filters" },
+                    { icon: "fa-calendar-alt", title: "Table Booking", desc: "Real-time reservation system" },
+                    { icon: "fa-whatsapp", title: "WhatsApp Ordering", desc: "Direct food ordering via WhatsApp" },
+                    { icon: "fa-star", title: "Reviews", desc: "Customer rating & review system" },
+                    { icon: "fa-mobile-alt", title: "Mobile First", desc: "Perfect on all devices" },
+                    { icon: "fa-bolt", title: "Fast Loading", desc: "Optimized for speed" }
+                ],
+                content: `
+                    <div style="max-width: 800px; margin: 0 auto;">
+                        <h2 style="color: #B08D57; margin-bottom: 1rem; font-size: 2.5rem;">Epicurean Delights</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.2rem;">Experience fine dining reimagined with modern technology</p>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                            <div style="padding: 2rem; background: rgba(176, 141, 87, 0.1); border-radius: 12px; border: 1px solid rgba(176, 141, 87, 0.3);">
+                                <div style="font-size: 3rem; color: #B08D57; margin-bottom: 1rem;">🍽️</div>
+                                <h3 style="color: white; margin-bottom: 0.5rem;">Digital Menu</h3>
+                                <p style="color: var(--text-secondary);">Browse our curated menu with high-quality images and detailed descriptions</p>
+                            </div>
+                            <div style="padding: 2rem; background: rgba(176, 141, 87, 0.1); border-radius: 12px; border: 1px solid rgba(176, 141, 87, 0.3);">
+                                <div style="font-size: 3rem; color: #B08D57; margin-bottom: 1rem;">📱</div>
+                                <h3 style="color: white; margin-bottom: 0.5rem;">Instant Booking</h3>
+                                <p style="color: var(--text-secondary);">Reserve your table instantly with our seamless booking system</p>
+                            </div>
+                        </div>
+                        
+                        <div style="background: linear-gradient(135deg, rgba(176, 141, 87, 0.2), rgba(212, 175, 55, 0.2)); padding: 2rem; border-radius: 12px; border: 1px solid rgba(176, 141, 87, 0.4);">
+                            <p style="color: white; margin: 0; text-align: center;">
+                                <i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.5rem;"></i>
+                                Your restaurant website is now live with premium features and WhatsApp integration
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            ecommerce: {
+                name: "Luxury Fashion Store",
+                color: "#ec4899",
+                features: [
+                    { icon: "fa-store", title: "Product Catalog", desc: "Beautiful product display with filters" },
+                    { icon: "fa-shopping-cart", title: "Shopping Cart", desc: "Seamless cart & checkout experience" },
+                    { icon: "fa-credit-card", title: "Secure Payments", desc: "Multiple payment gateway options" },
+                    { icon: "fa-truck", title: "Order Tracking", desc: "Real-time order status updates" },
+                    { icon: "fa-heart", title: "Wishlist", desc: "Save favorite products for later" },
+                    { icon: "fa-comments", title: "24/7 Support", desc: "WhatsApp customer support" }
+                ],
+                content: `
+                    <div style="max-width: 800px; margin: 0 auto;">
+                        <h2 style="background: linear-gradient(135deg, #ec4899, #8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 1rem; font-size: 2.5rem;">Vogue Collective</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.2rem;">Luxury fashion shopping redefined with premium experience</p>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem;">
+                            <div style="height: 120px; background: linear-gradient(135deg, #ec4899, #8b5cf6); border-radius: 12px;"></div>
+                            <div style="height: 120px; background: linear-gradient(135deg, #8b5cf6, #3b82f6); border-radius: 12px;"></div>
+                            <div style="height: 120px; background: linear-gradient(135deg, #3b82f6, #10b981); border-radius: 12px;"></div>
+                            <div style="height: 120px; background: linear-gradient(135deg, #10b981, #ec4899); border-radius: 12px;"></div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 2rem;">
+                            <div style="padding: 1.5rem; background: rgba(236, 72, 153, 0.1); border-radius: 12px; border: 1px solid rgba(236, 72, 153, 0.3);">
+                                <h3 style="color: white; margin-bottom: 0.5rem;">Featured</h3>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem;">Premium collection showcase</p>
+                            </div>
+                            <div style="padding: 1.5rem; background: rgba(139, 92, 246, 0.1); border-radius: 12px; border: 1px solid rgba(139, 92, 246, 0.3);">
+                                <h3 style="color: white; margin-bottom: 0.5rem;">New Arrivals</h3>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem;">Latest fashion trends added daily</p>
+                            </div>
+                        </div>
+                        
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 2rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                            <p style="color: white; margin: 0; text-align: center;">
+                                <i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.5rem;"></i>
+                                Your ecommerce store is now live with shopping cart, payments, and WhatsApp support
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            corporate: {
+                name: "Premium Corporate",
+                color: "#3b82f6",
+                features: [
+                    { icon: "fa-briefcase", title: "Services", desc: "Professional services showcase" },
+                    { icon: "fa-users", title: "Team Profiles", desc: "Team member introductions" },
+                    { icon: "fa-star", title: "Testimonials", desc: "Client success stories" },
+                    { icon: "fa-images", title: "Portfolio", desc: "Project gallery & case studies" },
+                    { icon: "fa-envelope", title: "Contact Form", desc: "Lead generation system" },
+                    { icon: "fa-chart-line", title: "Analytics", desc: "Performance tracking" }
+                ],
+                content: `
+                    <div style="max-width: 800px; margin: 0 auto;">
+                        <h2 style="color: #3b82f6; margin-bottom: 1rem; font-size: 2.5rem;">Innovate Solutions</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.2rem;">Driving business transformation through digital excellence</p>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                            <div style="padding: 2rem; background: rgba(59, 130, 246, 0.1); border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.3); text-align: center;">
+                                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 16px; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-rocket" style="font-size: 2rem; color: white;"></i>
+                                </div>
+                                <h3 style="color: white; margin-bottom: 0.5rem;">Our Mission</h3>
+                                <p style="color: var(--text-secondary);">Delivering exceptional digital solutions</p>
+                            </div>
+                            <div style="padding: 2rem; background: rgba(59, 130, 246, 0.1); border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.3); text-align: center;">
+                                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #8b5cf6, #ec4899); border-radius: 16px; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-bullseye" style="font-size: 2rem; color: white;"></i>
+                                </div>
+                                <h3 style="color: white; margin-bottom: 0.5rem;">Our Vision</h3>
+                                <p style="color: var(--text-secondary);">Leading digital innovation globally</p>
+                            </div>
+                        </div>
+                        
+                        <div style="background: rgba(59, 130, 246, 0.15); padding: 2rem; border-radius: 12px; border: 1px solid rgba(59, 130, 246, 0.4);">
+                            <p style="color: white; margin: 0; text-align: center;">
+                                <i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.5rem;"></i>
+                                Your corporate website is now live with portfolio, team profiles, and lead generation
+                            </p>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // Use example prompt
+        function useExample(index) {
+            document.getElementById('websitePrompt').value = examples[index - 1];
+            document.getElementById('websitePrompt').focus();
+        }
+
+        // Generate website function
+        document.getElementById('generateWebsite').addEventListener('click', async function() {
+            const prompt = document.getElementById('websitePrompt').value.trim();
+            
+            if (!prompt) {
+                alert('Please describe your website idea first!');
+                return;
+            }
+            
+            // Show processing animation
+            const processingDiv = document.getElementById('aiProcessing');
+            const previewDiv = document.getElementById('websitePreview');
+            const linkDiv = document.getElementById('websiteLink');
+            
+            processingDiv.style.display = 'block';
+            previewDiv.style.display = 'none';
+            linkDiv.style.display = 'none';
+            
+            // Simulate AI processing with progress bar
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = '0%';
+            
+            const steps = [
+                "Analyzing prompt...",
+                "Designing layout...",
+                "Generating content...",
+                "Adding features...",
+                "Optimizing for mobile...",
+                "Deploying website..."
+            ];
+            
+            for (let i = 0; i < steps.length; i++) {
+                progressBar.style.width = `${((i + 1) / steps.length) * 100}%`;
+                await new Promise(resolve => setTimeout(resolve, 800));
+            }
+            
+            // Hide processing, show preview
+            processingDiv.style.display = 'none';
+            
+            // Determine website type from prompt
+            let websiteType = 'corporate';
+            const promptLower = prompt.toLowerCase();
+            
+            if (promptLower.includes('restaurant') || promptLower.includes('food') || promptLower.includes('menu') || promptLower.includes('dining')) {
+                websiteType = 'restaurant';
+            } else if (promptLower.includes('ecommerce') || promptLower.includes('shop') || promptLower.includes('store') || promptLower.includes('product') || promptLower.includes('shopping')) {
+                websiteType = 'ecommerce';
+            } else if (promptLower.includes('corporate') || promptLower.includes('business') || promptLower.includes('company') || promptLower.includes('portfolio')) {
+                websiteType = 'corporate';
+            }
+            
+            // Update preview
+            document.getElementById('previewContent').innerHTML = websiteTemplates[websiteType].content;
+            
+            // Update features list
+            const detailsDiv = document.getElementById('websiteDetails');
+            detailsDiv.innerHTML = '';
+            
+            websiteTemplates[websiteType].features.forEach(feature => {
+                const detailCard = document.createElement('div');
+                detailCard.className = 'detail-card';
+                detailCard.innerHTML = `
+                    <div class="detail-icon">
+                        <i class="fas ${feature.icon}" style="color: white;"></i>
+                    </div>
+                    <h4 style="color: white; margin-bottom: 0.5rem;">${feature.title}</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 0;">${feature.desc}</p>
+                `;
+                detailsDiv.appendChild(detailCard);
+            });
+            
+            // Generate unique website URL
+            const uniqueId = Math.random().toString(36).substring(2, 8);
+            const websiteName = websiteTemplates[websiteType].name.toLowerCase().replace(/\s+/g, '-');
+            const websiteUrl = `https://${websiteName}-${uniqueId}.websites.ai`;
+            
+            // Update website URL
+            document.getElementById('liveWebsiteUrl').textContent = websiteUrl;
+            
+            // Show preview first
+            previewDiv.style.display = 'block';
+            
+            // After 2 seconds, show link
+            setTimeout(() => {
+                previewDiv.style.display = 'none';
+                linkDiv.style.display = 'block';
+                linkDiv.scrollIntoView({ behavior: 'smooth' });
+            }, 2000);
+        });
+
+        // Clear prompt
+        document.getElementById('clearPrompt').addEventListener('click', function() {
+            document.getElementById('websitePrompt').value = '';
+            document.getElementById('websitePreview').style.display = 'none';
+            document.getElementById('websiteLink').style.display = 'none';
+            document.getElementById('websitePrompt').focus();
+        });
+
+        // Visit website
+        document.getElementById('visitWebsite').addEventListener('click', function() {
+            const url = document.getElementById('liveWebsiteUrl').textContent;
+            window.open(url, '_blank');
+        });
+
+        // Share website link
+        document.getElementById('shareWebsite').addEventListener('click', function() {
+            const url = document.getElementById('liveWebsiteUrl').textContent;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Check out my AI-generated website!',
+                    text: 'I created this website instantly using AI Website Generator',
+                    url: url
+                });
+            } else {
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Website link copied to clipboard!');
+                });
+            }
+        });
+
+        // Create another website
+        document.getElementById('createAnother').addEventListener('click', function() {
+            document.getElementById('websitePrompt').value = '';
+            document.getElementById('websiteLink').style.display = 'none';
+            document.getElementById('websitePrompt').focus();
+        });
+
+        // Enter key to generate
+        document.getElementById('websitePrompt').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                e.preventDefault();
+                document.getElementById('generateWebsite').click();
+            }
+        });
+
+        // Auto-focus on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('websitePrompt').focus();
+        });
+    </script>
+</body>
+</html>
